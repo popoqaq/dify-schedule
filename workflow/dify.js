@@ -36,6 +36,10 @@ class WorkflowTask extends Task {
       this.workfolwName = info.data?.name || '';
       console.log(`Dify工作流【${info.data.name}】开始执行...`)
       const response =  await workflow.getWorkflowResult(inputs, user,true)
+      console.log(`Dify工作流【${info.data.name}】执行完成...`);
+      
+      console.log(`Dify工作流【${info.data.name}】执行结果：${response.text}`);
+      
       this.result = response.text || ''
     }
 
