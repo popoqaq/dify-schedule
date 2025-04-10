@@ -347,7 +347,9 @@ export class WorkflowClient extends DifyClient {
       response_mode: stream ? "streaming" : "blocking",
       user
     };
-
+    console.log(`Dify工作流开始执行...`);
+    console.log(`Dify工作流执行参数：${JSON.stringify(data)}`);
+    
     return this.sendRequest(
         routes.runWorkflow.method,
         routes.runWorkflow.url(),
