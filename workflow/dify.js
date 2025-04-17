@@ -47,29 +47,38 @@ class WorkflowTask extends Task {
         return this.result
     }
 }
-
 async function run(args) {
+  try {
     const tokens = env.DIFY_TOKENS.split(';');
     let messageList = [];
     for (let token of tokens) {
-      const workflow = new WorkflowTask({token});
-
-      await workflow.run(); // 执行
-
-      const content = workflow.toString();
-
-      console.log(content); // 打印结果
-
-      messageList.push(content);
+      try {
+        const workflow = new WorkflowTask({token});
+        await workflow.run(); // 执行
+        const content = workflow.toString();
+        console.log(content); // 打印结果
+        messageList.push(content);
+      } catch (error) {
+        console.error(`执行工作流失败: ${error.message}`);
+        messageList.push(`执行工作流失败: ${error.message}`);
+      }
     }
 
     const message = messageList.join(`\n${"-".repeat(15)}\n`);
-    Notify.pushMessage({
+    await Notify.pushMessage({
       title: "Dify工作流定时助手",
       content: message,
       msgtype: "text"
     });
+  } catch (error) {
+    console.error(`运行失败: ${error.message}`);
+    await Notify.pushMessage({
+      title: "Dify工作流定时助手-错误",
+      content: `运行失败: ${error.message}`,
+      msgtype: "text"
+    });
   }
+}
 
   run(process.argv.splice(2)).catch(error => {
     Notify.pushMessage({

@@ -1,3 +1,15 @@
+// Import dotenv and configure it
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+
+// Get the directory name of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load environment variables from .env file
+dotenv.config({ path: resolve(__dirname, '../.env') });
+
 const env = process.env || {};
 
 export default {
